@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MovieList from './components/MovieList';
+import MovieOverview from './components/MovieOverview';
 import { Search, Film } from 'lucide-react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const API_KEY = 'f2670df91b04be9ea41c364827883e16';
 const API_URL = 'https://api.themoviedb.org/3';
@@ -39,6 +41,7 @@ const App = () => {
   };
 
   return (
+    <Router>
     <div className="min-h-screen bg-gray-800 text-white">
       <header className="relative p-8 bg-gradient-to-b from-gray-900 to-gray-800">
         {/* Animated background element */}
@@ -108,9 +111,13 @@ const App = () => {
       </header>
 
       <main className="p-6">
-        <MovieList movies={movies} />
+        <Routes>
+          <Route path="/" element={<MovieList movies={movies} />} />
+          <Route path="/movie/:id" element={<MovieOverview />} />
+        </Routes>
       </main>
     </div>
+    </Router>
   );
 };
 
