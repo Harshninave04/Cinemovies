@@ -46,7 +46,7 @@ A minimalistic, responsive movie recommendation web app built with **React** and
 
 ### Screenshot 🖼️
 
-![Screenshot](https://via.placeholder.com/800x500?text=Movie+Finder+Screenshot)
+![Screenshot](./public/cinemovies.png)
 
 ### Future Enhancements 🛠️
 
