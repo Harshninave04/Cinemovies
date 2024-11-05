@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import {
   Star,
   Clock,
@@ -14,6 +15,7 @@ import {
 
 const MovieOverview = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isHeaderVisible, setIsHeaderVisible] = useState(false);
@@ -59,8 +61,17 @@ const MovieOverview = () => {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
+      {/* Mobile Navbar */}
+      <nav className="fixed top-0 left-0 right-0 bg-transparent bg-opacity-75 backdrop-blur-lg z-20 flex items-center p-4 text-white">
+        <button onClick={() => navigate(-1)} className="flex items-center space-x-2">
+          <ArrowLeft className="w-6 h-6 text-gray-300 hover:text-white transition-colors" />
+          <span className="text-lg">Back</span>
+        </button>
+        <h1 className="flex-grow text-center text-xl font-semibold">{movie.title}</h1>
+      </nav>
+
       {/* Hero Section */}
-      <div className="relative min-h-screen">
+      <div className="relative min-h-screen mt-16 md:mt-16">
         {/* Background Image with Parallax Effect */}
         <div className="absolute inset-0 scale-105">
           <img src={imageUrl} alt="" className="w-full h-full object-cover opacity-80" />
