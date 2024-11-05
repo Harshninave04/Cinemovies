@@ -17,7 +17,10 @@ const MovieOverview = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);  
+  const [cast, setCast] = useState([]);
+  const [similarMovies, setSimilarMovies] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [isHeaderVisible, setIsHeaderVisible] = useState(false);
 
   useEffect(() => {
@@ -35,7 +38,47 @@ const MovieOverview = () => {
         setLoading(false);
       }
     };
+
+    const fetchMovieCast = async () => {
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/movie/${id}/credits?api_key=f2670df91b04be9ea41c364827883e16`,
+        );
+        const data = await response.json();
+        setCast(data.cast.slice(0, 10)); // Limit to top 10 cast members
+      } catch (error) {
+        console.error('Error fetching movie cast:', error);
+      }
+    };
+
+    const fetchSimilarMovies = async () => {
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/movie/${id}/similar?api_key=f2670df91b04be9ea41c364827883e16`,
+        );
+        const data = await response.json();
+        setSimilarMovies(data.results.slice(0, 6)); // Limit to 6 similar movies
+      } catch (error) {
+        console.error('Error fetching similar movies:', error);
+      }
+    };
+
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=f2670df91b04be9ea41c364827883e16`,
+        );
+        const data = await response.json();
+        setReviews(data.results.slice(0, 3)); // Limit to top 3 reviews
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    };
+
     fetchMovieDetails();
+    fetchMovieCast();
+    fetchSimilarMovies();
+    fetchReviews();
   }, [id]);
 
   if (loading) {
@@ -74,9 +117,15 @@ const MovieOverview = () => {
       <div className="relative min-h-screen mt-16 md:mt-16">
         {/* Background Image with Parallax Effect */}
         <div className="absolute inset-0 scale-105">
-          <img src={imageUrl} alt="" className="w-full h-full object-cover opacity-80" />
+          <img src={imageUrl} alt="" className="w-full h-fit object-cover opacity-80" />
+          {/* Top Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/20" />
+
+          {/* Right Side Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" />
+          
+          {/* Bottom Blur Effect */}
+          <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-b from-transparent to-black blur-lg" />
         </div>
 
         {/* Content Grid */}
@@ -179,6 +228,60 @@ const MovieOverview = () => {
                 <p className="mt-4 text-xl italic text-gray-400">"{movie.tagline}"</p>
               )}
             </div>
+          </div>
+
+          {/* Cast Section */}
+          <div className="mt-16">
+            <h2 className="text-2xl font-semibold mb-4">Cast</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {cast.map((actor) => (
+                <div key={actor.id} className="flex flex-col items-center text-center">
+                  <img
+                    src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                    alt={actor.name}
+                    className="w-24 h-24 rounded-full object-cover"
+                  />
+                  <span className="mt-2 font-semibold">{actor.name}</span>
+                  <span className="text-gray-400 text-sm">{actor.character}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Similar Movies Section */}
+          <div className="mt-16">
+            <h2 className="text-2xl font-semibold mb-4">Similar Movies</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {similarMovies.map((movie) => (
+                <div key={movie.id} className="relative group">
+                  <img
+                    src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                    alt={movie.title}
+                    className="rounded-lg shadow-lg w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <h3 className="text-white font-semibold text-lg">{movie.title}</h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Reviews Section */}
+          <div className="mt-16">
+            <h2 className="text-2xl font-semibold mb-4">User Reviews</h2>
+            {reviews.length > 0 ? (
+              <div className="space-y-8">
+                {reviews.map((review) => (
+                  <div key={review.id} className="bg-gray-800 p-4 rounded-lg">
+                    <h3 className="font-semibold text-lg">{review.author}</h3>
+                    <p className="text-gray-300 mt-2">{review.content}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-400">No reviews available for this movie.</p>
+            )}
           </div>
         </div>
       </div>
