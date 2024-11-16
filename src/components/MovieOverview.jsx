@@ -118,24 +118,39 @@ const MovieOverview = () => {
 
       {/* Hero Section */}
       <div className="relative min-h-screen pt-16">
-        {/* Background Image */}
-        <div className="absolute inset-0 scale-105">
-          <img 
-            src={imageUrl} 
-            alt="" 
-            className="w-full h-fit object-cover opacity-60"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" />
+        {/* Background Image Section */}
+        <div className="absolute inset-0">
+          <div className="relative w-full h-full min-h-screen">
+            <img
+              src={imageUrl}
+              alt=""
+              className="absolute w-full h-[600px] md:h-fit object-cover object-center 
+                 sm:object-center md:object-center
+                 opacity-60 transition-opacity duration-300"
+            />
+            {/* Mobile-optimized gradient overlays */}
+            <div
+              className="absolute inset-0 bg-gradient-to-t 
+                    from-black via-black/90 to-black/40 
+                    sm:via-black/80 sm:to-black/20"
+            />
+
+            <div
+              className="absolute inset-0 bg-gradient-to-r 
+                    from-black/20 via-black/70 to-transparent
+                    sm:via-black/50"
+            />
+          </div>
         </div>
 
         {/* Main Content */}
         <div className="relative z-10 container mx-auto px-4 py-8 md:py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 ml-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 ml-3 md:ml-8">
             {/* Left Column - Poster and Actions */}
-            <div className={`lg:col-span-5 flex flex-col items-center lg:items-start space-y-6 transition-all duration-1000 ${
-              isHeaderVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
-            }`}>
+            <div
+              className={`lg:col-span-5 flex flex-col items-center lg:items-start space-y-6 transition-all duration-1000 ${
+                isHeaderVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'
+              }`}>
               {/* Poster */}
               <div className="relative group w-64 md:w-80">
                 <img
@@ -165,9 +180,10 @@ const MovieOverview = () => {
             </div>
 
             {/* Right Column - Movie Details */}
-            <div className={`lg:col-span-7 flex flex-col space-y-6 md:space-y-8 transition-all duration-1000 delay-300 ${
-              isHeaderVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
-            }`}>
+            <div
+              className={`lg:col-span-7 flex flex-col space-y-6 md:space-y-8 transition-all duration-1000 delay-300 ${
+                isHeaderVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
+              }`}>
               {/* Title and Rating */}
               <div className="text-center lg:text-left">
                 <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
@@ -178,7 +194,9 @@ const MovieOverview = () => {
                 </h1>
                 <div className="flex items-center justify-center lg:justify-start space-x-2">
                   <Star className="w-5 h-5 md:w-6 md:h-6 text-yellow-400 fill-current" />
-                  <span className="text-xl md:text-2xl font-bold">{movie.vote_average?.toFixed(1)}</span>
+                  <span className="text-xl md:text-2xl font-bold">
+                    {movie.vote_average?.toFixed(1)}
+                  </span>
                   <span className="text-gray-400">/ 10</span>
                 </div>
               </div>
@@ -188,8 +206,7 @@ const MovieOverview = () => {
                 {movie.genres?.map((genre) => (
                   <span
                     key={genre.id}
-                    className="px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base rounded-full bg-white/5 hover:bg-white/10 transition-colors cursor-pointer"
-                  >
+                    className="px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base rounded-full bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
                     {genre.name}
                   </span>
                 ))}
@@ -213,8 +230,7 @@ const MovieOverview = () => {
                 ].map(({ icon: Icon, label, value }) => (
                   <div
                     key={label}
-                    className="bg-white/5 rounded-lg p-3 md:p-4 hover:bg-white/10 transition-colors"
-                  >
+                    className="bg-white/5 rounded-lg p-3 md:p-4 hover:bg-white/10 transition-colors">
                     <Icon className="w-4 h-4 md:w-5 md:h-5 mb-2 text-gray-400" />
                     <div className="text-xs md:text-sm text-gray-400">{label}</div>
                     <div className="text-sm md:text-base font-semibold">{value}</div>
@@ -229,9 +245,7 @@ const MovieOverview = () => {
                   {movie.overview}
                 </p>
                 {movie.tagline && (
-                  <p className="mt-4 text-lg md:text-xl italic text-gray-400">
-                    "{movie.tagline}"
-                  </p>
+                  <p className="mt-4 text-lg md:text-xl italic text-gray-400">"{movie.tagline}"</p>
                 )}
               </div>
             </div>
@@ -263,8 +277,7 @@ const MovieOverview = () => {
                 <Link
                   to={`/movie/${movie.id}`}
                   key={movie.id}
-                  className="relative group aspect-[2/3]"
-                >
+                  className="relative group aspect-[2/3]">
                   <img
                     src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                     alt={movie.title}
