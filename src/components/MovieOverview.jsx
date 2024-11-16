@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import {
   Star,
@@ -123,7 +123,7 @@ const MovieOverview = () => {
 
           {/* Right Side Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent" />
-          
+
           {/* Bottom Blur Effect */}
           <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-b from-transparent to-black blur-lg" />
         </div>
@@ -253,7 +253,7 @@ const MovieOverview = () => {
             <h2 className="text-2xl font-semibold mb-4">Similar Movies</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {similarMovies.map((movie) => (
-                <div key={movie.id} className="relative group">
+                <Link to={`/movie/${movie.id}`} key={movie.id} className="relative group">
                   <img
                     src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                     alt={movie.title}
@@ -262,7 +262,7 @@ const MovieOverview = () => {
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <h3 className="text-white font-semibold text-lg">{movie.title}</h3>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
